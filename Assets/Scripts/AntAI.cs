@@ -17,7 +17,7 @@ public class SimpleStateMachine : MonoBehaviour
     [Header("Config")]
     public float wanderDistance = 10f;
     public float waypointThreshold = 0.6f;
-    public float playerDistThreshold = 1.5f;
+    public float playerDistanceThreshold = 1.5f;
     public float foodDistanceThreshold = 1.5f;
     public float rotationSpeed = 1f;
     public float walkSpeed = 2.0f;
@@ -118,6 +118,7 @@ public class SimpleStateMachine : MonoBehaviour
 
         agent.speed = walkSpeed;
 
+        // Go to the last position where a smell was detected
         if (lastSmellPosition != Vector3.zero)
         {
             agent.SetDestination(lastSmellPosition);
@@ -134,8 +135,8 @@ public class SimpleStateMachine : MonoBehaviour
             {
                 state = State.Forage;
             }
-        }        
-        else if (!agent.pathPending && agent.remainingDistance <= waypointThreshold) //if the agent reached its destination, wander
+        }
+        else if (!agent.pathPending && agent.remainingDistance <= waypointThreshold) //if the agent reached its destination but nothing was activated, wander
         {
             state = State.Wander;
         }
@@ -205,7 +206,7 @@ public class SimpleStateMachine : MonoBehaviour
         // If an agent touches the player, the player dies (restart the scene)
         Vector3 toPlayer = player.position - transform.position;
         float distToPlayer = toPlayer.magnitude;
-        if (distToPlayer < playerDistThreshold && canSeePlayer) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        if (distToPlayer < playerDistanceThreshold && canSeePlayer) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
         // Transition back if lost the player
         if (!canSeePlayer)
