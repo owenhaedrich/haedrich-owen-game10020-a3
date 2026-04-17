@@ -94,7 +94,7 @@ public class SimpleStateMachine : MonoBehaviour
         ForgetSmellAndFood();
         UpdateSenses();
 
-        // If the agent has reached the wander target or the target is null, set a new one
+        // If the agent has reached the wander target or there is no target, set a new one
         if ((!agent.pathPending && agent.remainingDistance <= waypointThreshold) || wanderTarget == Vector3.zero)
         {
             SetNewWanderTarget();
@@ -227,6 +227,7 @@ public class SimpleStateMachine : MonoBehaviour
         float closestDist = float.MaxValue;
         currentFoodItem = null;
 
+        // Check in the smell radius for scents. Identify food if there is any.
         Collider[] potentialScents = Physics.OverlapSphere(transform.position, smellRadius);
         foreach (var collider in potentialScents)
         {
